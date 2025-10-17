@@ -29,16 +29,11 @@ import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
-    // Estado para os líderes de grupo
     var nomesLideres by remember { mutableStateOf(value = "") }
-    // Estado para os membros comuns
     var nomesComuns by remember { mutableStateOf(value = "") }
 
-    // Calculamos se o botão deve estar habilitado
     val lideresValidos = nomesLideres.split(";").filter { it.trim().isNotEmpty() }.size
     val comunsValidos = nomesComuns.split(";").filter { it.trim().isNotEmpty() }.size
-
-    // O botão só é habilitado se houver pelo menos 1 líder e 3 membros comuns para formar 1 grupo
     val isEnabled = lideresValidos >= 1 && comunsValidos >= (TAMANHO_DO_GRUPO - 1)
 
     Scaffold(topBar = { TopAppBar(title = { Text(text = "Sortear Grupos") }) }) { paddingValues ->
@@ -49,7 +44,6 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
                 .padding(all = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // --- CAMPO 1: CABEÇAS DE CHAVE (LÍDERES) ---
             OutlinedTextField(
                 value = nomesLideres,
                 onValueChange = { nomesLideres = it },
@@ -61,7 +55,6 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- CAMPO 2: DEMAIS MEMBROS ---
             OutlinedTextField(
                 value = nomesComuns,
                 onValueChange = { nomesComuns = it },
@@ -70,12 +63,11 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 100.dp, max = 250.dp) // Altura flexível
+                    .heightIn(min = 100.dp, max = 250.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- BOTÃO DE SORTEIO ---
             Button(
                 onClick = { onSortearClicked(nomesLideres, nomesComuns) },
                 enabled = isEnabled,

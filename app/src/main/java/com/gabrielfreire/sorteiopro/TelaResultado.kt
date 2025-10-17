@@ -31,7 +31,7 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Resultado do Sorteio") },
+                title = { Text(text = "Resultado do Sorteio") },
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
                         Icon(
@@ -49,7 +49,6 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
-            // ** 1. Campo dos Nomes que Sobraram **
             val textoSobra = if (resultado.sobrantes.isEmpty()) {
                 "✅ Sucesso! Todos os ${resultado.grupos.size * Sorteador.TAMANHO_DO_GRUPO} nomes foram encaixados em grupos completos."
             } else {
@@ -73,20 +72,18 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
 
             Spacer(modifier = Modifier.height(height = 16.dp))
 
-            // ** 2. Lista de Grupos **
             if (resultado.grupos.isEmpty()) {
-                Text("Nenhum grupo completo pôde ser formado.")
+                Text(text = "Nenhum grupo completo pôde ser formado.")
             } else {
-                Text("Grupos Formados:", style = MaterialTheme.typography.headlineSmall)
+                Text(text = "Grupos Formados:", style = MaterialTheme.typography.headlineSmall)
                 Spacer(modifier = Modifier.height(height = 8.dp))
 
                 LazyColumn {
-                    itemsIndexed(resultado.grupos) { index, grupo ->
+                    itemsIndexed(items = resultado.grupos) { index, grupo ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 4.dp),
-                            // elevation = CardDefaults.cardElevation(2.dp) // Exemplo de estilo
                         ) {
                             Column(modifier = Modifier.padding(all = 16.dp)) {
                                 Text(

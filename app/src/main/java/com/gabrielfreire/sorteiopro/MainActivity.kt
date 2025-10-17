@@ -28,43 +28,34 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    // O resultado do sorteio deve ser compartilhado entre telas.
-    // Usaremos um ViewModel, mas para simplicidade, um estado aqui serve.
+
     var resultadoSorteio by remember { mutableStateOf<ResultadoSorteio?>(null) }
 
     NavHost(
         navController = navController,
         startDestination = Screen.Principal.route
     ) {
-        // Primeira Tela: Entrada de Nomes
         composable(route = Screen.Principal.route) {
             TelaPrincipal(
-                onSortearClicked = { textoLideres, textoComuns -> // AGORA RECEBE DOIS ARGUMENTOS
+                onSortearClicked = { textoLideres, textoComuns ->
                     resultadoSorteio = Sorteador().sortearGruposComLideres(
                         textoCabecasDeChave = textoLideres,
                         textoDemaisNomes = textoComuns
                     )
+
                     navController.navigate(route = Screen.Resultado.route)
                 }
             )
         }
 
-        // Segunda Tela: Resultado do Sorteio
         composable(route = Screen.Resultado.route) {
-            // Verifica se há resultado para exibir
             resultadoSorteio?.let { resultado ->
                 TelaResultado(
                     resultado = resultado,
-                    onBackClicked = {
-                        // Navega de volta para a tela principal
-                        navController.popBackStack()
-                    }
+                    onBackClicked = { navController.popBackStack() }
                 )
             } ?: run {
-                // Caso algo dê errado, volta para a tela principal.
-                LaunchedEffect(key1 = Unit) {
-                    navController.popBackStack()
-                }
+                LaunchedEffect(key1 = Unit) { navController.popBackStack() }
             }
         }
     }
