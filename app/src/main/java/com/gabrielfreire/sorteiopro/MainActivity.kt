@@ -40,7 +40,8 @@ fun AppNavigation() {
         composable(Screen.Principal.route) {
             TelaPrincipal(
                 onSortearClicked = { textoNomes ->
-                    resultadoSorteio = Sorteador().sortearGrupos(textoNomes)
+                    val listaProcessada = preProcessarNomes(textoNomes)
+                    resultadoSorteio = Sorteador().sortearGruposAprimorado(listaProcessada)
                     navController.navigate(Screen.Resultado.route)
                 }
             )
@@ -65,4 +66,18 @@ fun AppNavigation() {
             }
         }
     }
+}
+
+fun preProcessarNomes(textoNomes: String): List<NomeComFlag> {
+    return textoNomes
+        .split(";")
+        .map { it.trim() }
+        .filter { it.isNotEmpty() }
+        .map { nomeCompleto ->
+            val isCabecaDeChave = nomeCompleto.startsWith("*")
+            // Remove o asterisco do nome final
+            val nomeLimpo =
+                if (isCabecaDeChave) nomeCompleto.drop(1).trim() else nomeCompleto.trim()
+            NomeComFlag(nomeLimpo, isCabecaDeChave)
+        }
 }

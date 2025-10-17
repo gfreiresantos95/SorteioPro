@@ -1,34 +1,67 @@
 package com.gabrielfreire.sorteiopro
 
 class Sorteador {
-    fun sortearGrupos(textoNomes: String): ResultadoSorteio {
-        // 1. Processar e Limpar Nomes
-        val nomesComTrim = textoNomes
-            .split(";")
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
+    // A função agora recebe a lista de objetos já processada.
+    fun sortearGruposAprimorado(listaNomesComFlags: List<NomeComFlag>): ResultadoSorteio {
 
-        if (nomesComTrim.isEmpty()) {
-            return ResultadoSorteio(emptyList(), emptyList())
+        // 1. Separar Cabeças de Chave e Demais Nomes
+        val cabecasDeChave = listaNomesComFlags.filter { it.isCabecaDeChave }
+            .map { it.nome }
+            .shuffled() // Embaralha para que a ordem dos líderes nos grupos seja aleatória
+
+        var demaisNomes = listaNomesComFlags.filter { it.isCabecaDeChave.not() }
+            .map { it.nome }
+            .shuffled() // Embaralha o restante dos nomes
+
+        // 2. Determinar o número máximo de grupos
+        val numCabecas = cabecasDeChave.size
+        val numGruposPossiveis = numCabecas // Cada Cabeça de Chave forma um grupo
+
+        // Lista para armazenar os grupos finais
+        val gruposFinais = mutableListOf<List<String>>()
+
+        // Lista para armazenar nomes que não foram alocados
+        val sobrantes = mutableListOf<String>()
+
+        // 3. Alocar Cabeças de Chave e Completar Grupos
+        for (i in 0 until numGruposPossiveis) {
+            val grupoEmConstrucao = mutableListOf<String>()
+            val cabeca = cabecasDeChave[i]
+
+            // Adiciona o Cabeça de Chave
+            grupoEmConstrucao.add(cabeca)
+
+            // Calcula quantos membros faltam no grupo (TAMANHO_DO_GRUPO - 1)
+            val faltam = TAMANHO_DO_GRUPO - 1
+
+            // 4. Preencher o restante do grupo com nomes aleatórios
+            if (demaisNomes.size >= faltam) {
+                // Pega os 'faltam' nomes e os remove da lista 'demaisNomes'
+                val completadores = demaisNomes.take(faltam)
+                demaisNomes = demaisNomes.drop(faltam) // Atualiza a lista removendo os usados
+
+                grupoEmConstrucao.addAll(completadores)
+                gruposFinais.add(grupoEmConstrucao)
+
+            } else {
+                // Se não houver nomes suficientes para completar o grupo, o Cabeça de Chave sobrou
+                // (e qualquer nome restante no demaisNomes também sobrará)
+                sobrantes.add(cabeca)
+                break // Interrompe o loop, pois os Cabeças de Chave restantes também sobrarão
+            }
         }
 
-        // 2. Sortear (Embaralhar)
-        val nomesEmbaralhados = nomesComTrim.shuffled().toMutableList()
+        // 5. Nomes Sobrantes
+        // Qualquer Cabeça de Chave não utilizado (se o loop quebrou)
+        if (sobrantes.isNotEmpty()) {
+            val cabecasSobrando = cabecasDeChave.subList(gruposFinais.size, cabecasDeChave.size)
+            sobrantes.addAll(cabecasSobrando)
+        }
 
-        // Otimização: A função chunked do Kotlin faz exatamente isso!
-        // Ela divide a lista em sublistas de tamanho N, e o restante fica na última sublista.
-        // No nosso caso, pegamos apenas os grupos completos.
+        // Todos os nomes restantes são considerados sobrantes
+        sobrantes.addAll(demaisNomes)
 
-        val gruposCompletos = nomesEmbaralhados
-            .chunked(TAMANHO_DO_GRUPO)
-            .filter { it.size == TAMANHO_DO_GRUPO }
-
-        // Os nomes que sobraram
-        // Calculamos quantos nomes foram usados: número de grupos * tamanho do grupo
-        val nomesUsados = gruposCompletos.sumOf { it.size }
-        val nomesSobrantes = nomesEmbaralhados.drop(nomesUsados) // Pula os nomes usados
-
-        return ResultadoSorteio(gruposCompletos, nomesSobrantes)
+        return ResultadoSorteio(gruposFinais, sobrantes)
     }
 
     companion object {
