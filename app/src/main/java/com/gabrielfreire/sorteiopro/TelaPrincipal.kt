@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
@@ -36,7 +37,11 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
     val comunsValidos = nomesComuns.split(";").filter { it.trim().isNotEmpty() }.size
     val isEnabled = lideresValidos >= 1 && comunsValidos >= (TAMANHO_DO_GRUPO - 1)
 
-    Scaffold(topBar = { TopAppBar(title = { Text(text = "Sortear Grupos") }) }) { paddingValues ->
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(text = stringResource(id = R.string.tela_principal_titulo))
+        })
+    }) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -47,38 +52,54 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
             OutlinedTextField(
                 value = nomesLideres,
                 onValueChange = { nomesLideres = it },
-                label = { Text(text = "1. Cabeças de Chave (Líderes) - (Separar por ;)") },
-                placeholder = { Text(text = "Ex: Marcelo; Thiago; Carlos; ...") },
+                label = {
+                    Text(text = stringResource(id = R.string.tela_principal_lideres_label))
+                },
+                placeholder = {
+                    Text(text = stringResource(id = R.string.tela_principal_lideres_placeholder))
+                },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(height = 16.dp))
 
             OutlinedTextField(
                 value = nomesComuns,
                 onValueChange = { nomesComuns = it },
-                label = { Text(text = "2. Demais Membros - (Separar por ;)") },
-                placeholder = { Text(text = "Ex: Ana; Bruno; Diogo; Felipe; ...") },
+                label = {
+                    Text(text = stringResource(id = R.string.tela_principal_membros_label))
+                },
+                placeholder = {
+                    Text(text = stringResource(id = R.string.tela_principal_membros_placeholder))
+                },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 100.dp, max = 250.dp)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(height = 24.dp))
 
             Button(
                 onClick = { onSortearClicked(nomesLideres, nomesComuns) },
                 enabled = isEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Sortear Grupos de $TAMANHO_DO_GRUPO")
+                Text(
+                    text = stringResource(
+                        id = R.string.tela_principal_botao_sortear,
+                        TAMANHO_DO_GRUPO
+                    )
+                )
             }
 
             if (isEnabled.not()) {
                 Text(
-                    text = "Mínimo para sortear: 1 Líder e ${TAMANHO_DO_GRUPO - 1} Membros.",
+                    text = stringResource(
+                        id = R.string.tela_principal_minimo_sortear,
+                        TAMANHO_DO_GRUPO - 1
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error
                 )

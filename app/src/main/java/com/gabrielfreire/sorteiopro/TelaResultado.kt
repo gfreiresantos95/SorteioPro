@@ -24,19 +24,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
+import androidx.compose.ui.res.stringResource
+import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
+    val numNomesTotais = resultado.grupos.size * TAMANHO_DO_GRUPO
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Resultado do Sorteio") },
+                title = { Text(text = stringResource(id = R.string.tela_resultado_titulo)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Voltar"
+                            contentDescription = stringResource(id = R.string.tela_resultado_voltar)
                         )
                     }
                 }
@@ -50,17 +54,25 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 .padding(horizontal = 16.dp)
         ) {
             val textoSobra = if (resultado.sobrantes.isEmpty()) {
-                "✅ Sucesso! Todos os ${resultado.grupos.size * Sorteador.TAMANHO_DO_GRUPO} nomes foram encaixados em grupos completos."
+                stringResource(id = R.string.sobra_sucesso, numNomesTotais)
             } else {
-                "⚠️ Sobraram ${resultado.sobrantes.size} nome(s): ${
-                    resultado.sobrantes.joinToString(separator = ", ")
-                }"
+                stringResource(
+                    id = R.string.sobra_aviso,
+                    resultado.sobrantes.size,
+                    resultado.sobrantes.joinToString(", ")
+                )
+            }
+
+            val color = if (resultado.sobrantes.isEmpty()) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.error
             }
 
             Text(
                 text = textoSobra,
                 style = MaterialTheme.typography.titleMedium,
-                color = if (resultado.sobrantes.isEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                color = color,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
@@ -73,9 +85,12 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
             Spacer(modifier = Modifier.height(height = 16.dp))
 
             if (resultado.grupos.isEmpty()) {
-                Text(text = "Nenhum grupo completo pôde ser formado.")
+                Text(text = stringResource(id = R.string.sobra_nenhum_grupo))
             } else {
-                Text(text = "Grupos Formados:", style = MaterialTheme.typography.headlineSmall)
+                Text(
+                    text = stringResource(id = R.string.tela_resultado_grupos_formados),
+                    style = MaterialTheme.typography.headlineSmall
+                )
                 Spacer(modifier = Modifier.height(height = 8.dp))
 
                 LazyColumn {
@@ -87,7 +102,10 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                         ) {
                             Column(modifier = Modifier.padding(all = 16.dp)) {
                                 Text(
-                                    text = "GRUPO ${index + 1} (4 pessoas)",
+                                    text = stringResource(
+                                        id = R.string.tela_resultado_grupo_label,
+                                        index + 1
+                                    ),
                                     style = MaterialTheme.typography.titleMedium
                                 )
                                 Spacer(modifier = Modifier.height(height = 4.dp))
