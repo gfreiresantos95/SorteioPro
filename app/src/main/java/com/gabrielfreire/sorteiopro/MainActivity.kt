@@ -37,18 +37,20 @@ fun AppNavigation() {
         startDestination = Screen.Principal.route
     ) {
         // Primeira Tela: Entrada de Nomes
-        composable(Screen.Principal.route) {
+        composable(route = Screen.Principal.route) {
             TelaPrincipal(
-                onSortearClicked = { textoNomes ->
-                    val listaProcessada = preProcessarNomes(textoNomes)
-                    resultadoSorteio = Sorteador().sortearGruposAprimorado(listaProcessada)
-                    navController.navigate(Screen.Resultado.route)
+                onSortearClicked = { textoLideres, textoComuns -> // AGORA RECEBE DOIS ARGUMENTOS
+                    resultadoSorteio = Sorteador().sortearGruposComLideres(
+                        textoCabecasDeChave = textoLideres,
+                        textoDemaisNomes = textoComuns
+                    )
+                    navController.navigate(route = Screen.Resultado.route)
                 }
             )
         }
 
         // Segunda Tela: Resultado do Sorteio
-        composable(Screen.Resultado.route) {
+        composable(route = Screen.Resultado.route) {
             // Verifica se há resultado para exibir
             resultadoSorteio?.let { resultado ->
                 TelaResultado(
@@ -60,24 +62,10 @@ fun AppNavigation() {
                 )
             } ?: run {
                 // Caso algo dê errado, volta para a tela principal.
-                LaunchedEffect(Unit) {
+                LaunchedEffect(key1 = Unit) {
                     navController.popBackStack()
                 }
             }
         }
     }
-}
-
-fun preProcessarNomes(textoNomes: String): List<NomeComFlag> {
-    return textoNomes
-        .split(";")
-        .map { it.trim() }
-        .filter { it.isNotEmpty() }
-        .map { nomeCompleto ->
-            val isCabecaDeChave = nomeCompleto.startsWith("*")
-            // Remove o asterisco do nome final
-            val nomeLimpo =
-                if (isCabecaDeChave) nomeCompleto.drop(1).trim() else nomeCompleto.trim()
-            NomeComFlag(nomeLimpo, isCabecaDeChave)
-        }
 }

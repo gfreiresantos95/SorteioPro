@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,40 +24,72 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TelaPrincipal(onSortearClicked: (String) -> Unit) {
-    var nomes by remember { mutableStateOf("") }
+fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
+    // Estado para os líderes de grupo
+    var nomesLideres by remember { mutableStateOf(value = "") }
+    // Estado para os membros comuns
+    var nomesComuns by remember { mutableStateOf(value = "") }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Sortear Grupos") }) }) { paddingValues ->
+    // Calculamos se o botão deve estar habilitado
+    val lideresValidos = nomesLideres.split(";").filter { it.trim().isNotEmpty() }.size
+    val comunsValidos = nomesComuns.split(";").filter { it.trim().isNotEmpty() }.size
+
+    // O botão só é habilitado se houver pelo menos 1 líder e 3 membros comuns para formar 1 grupo
+    val isEnabled = lideresValidos >= 1 && comunsValidos >= (TAMANHO_DO_GRUPO - 1)
+
+    Scaffold(topBar = { TopAppBar(title = { Text(text = "Sortear Grupos") }) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(all = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // --- CAMPO 1: CABEÇAS DE CHAVE (LÍDERES) ---
             OutlinedTextField(
-                value = nomes,
-                onValueChange = { nomes = it },
-                label = { Text("Lista de Nomes (separados por ;)") },
-                placeholder = { Text("Ex: Ana; Bruno; Carlos; ...") },
+                value = nomesLideres,
+                onValueChange = { nomesLideres = it },
+                label = { Text(text = "1. Cabeças de Chave (Líderes) - (Separar por ;)") },
+                placeholder = { Text(text = "Ex: Marcelo; Thiago; Carlos; ...") },
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- CAMPO 2: DEMAIS MEMBROS ---
+            OutlinedTextField(
+                value = nomesComuns,
+                onValueChange = { nomesComuns = it },
+                label = { Text(text = "2. Demais Membros - (Separar por ;)") },
+                placeholder = { Text(text = "Ex: Ana; Bruno; Diogo; Felipe; ...") },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .heightIn(min = 100.dp, max = 250.dp) // Altura flexível
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // --- BOTÃO DE SORTEIO ---
             Button(
-                onClick = { onSortearClicked(nomes) },
-                enabled = nomes.split(";")
-                    .filter { it.trim().isNotEmpty() }.size >= Sorteador.TAMANHO_DO_GRUPO,
+                onClick = { onSortearClicked(nomesLideres, nomesComuns) },
+                enabled = isEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Sortear Grupos de ${Sorteador.TAMANHO_DO_GRUPO}")
+                Text(text = "Sortear Grupos de $TAMANHO_DO_GRUPO")
+            }
+
+            if (isEnabled.not()) {
+                Text(
+                    text = "Mínimo para sortear: 1 Líder e ${TAMANHO_DO_GRUPO - 1} Membros.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
         }
     }

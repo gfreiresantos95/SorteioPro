@@ -34,7 +34,10 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 title = { Text("Resultado do Sorteio") },
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Voltar"
+                        )
                     }
                 }
             )
@@ -51,7 +54,7 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 "✅ Sucesso! Todos os ${resultado.grupos.size * Sorteador.TAMANHO_DO_GRUPO} nomes foram encaixados em grupos completos."
             } else {
                 "⚠️ Sobraram ${resultado.sobrantes.size} nome(s): ${
-                    resultado.sobrantes.joinToString(", ")
+                    resultado.sobrantes.joinToString(separator = ", ")
                 }"
             }
 
@@ -62,20 +65,20 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                        shape = RoundedCornerShape(8.dp)
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        shape = RoundedCornerShape(size = 8.dp)
                     )
-                    .padding(12.dp)
+                    .padding(all = 12.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(height = 16.dp))
 
             // ** 2. Lista de Grupos **
             if (resultado.grupos.isEmpty()) {
                 Text("Nenhum grupo completo pôde ser formado.")
             } else {
                 Text("Grupos Formados:", style = MaterialTheme.typography.headlineSmall)
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(height = 8.dp))
 
                 LazyColumn {
                     itemsIndexed(resultado.grupos) { index, grupo ->
@@ -85,14 +88,14 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                                 .padding(vertical = 4.dp),
                             // elevation = CardDefaults.cardElevation(2.dp) // Exemplo de estilo
                         ) {
-                            Column(modifier = Modifier.padding(16.dp)) {
+                            Column(modifier = Modifier.padding(all = 16.dp)) {
                                 Text(
                                     text = "GRUPO ${index + 1} (4 pessoas)",
                                     style = MaterialTheme.typography.titleMedium
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
+                                Spacer(modifier = Modifier.height(height = 4.dp))
                                 Text(
-                                    text = grupo.joinToString("\n"),
+                                    text = grupo.joinToString(separator = "\n"),
                                     style = MaterialTheme.typography.bodyLarge,
                                     lineHeight = 24.sp
                                 )
