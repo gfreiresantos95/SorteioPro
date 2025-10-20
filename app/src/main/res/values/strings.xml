@@ -2,6 +2,7 @@
     <string name="app_name">SorteioPro</string>
 
     <string name="tela_principal_titulo">Sortear Grupos</string>
+    <string name="tela_principal_tamanho_label">Tamanho do Grupo (Pessoas)</string>
     <string name="tela_principal_lideres_label">1. Cabeças de Chave (Líderes) - (Separar por ;)</string>
     <string name="tela_principal_lideres_placeholder">Ex: Marcelo; Thiago; Carlos; …</string>
     <string name="tela_principal_membros_label">2. Demais Membros - (Separar por ;)</string>
@@ -12,9 +13,9 @@
     <string name="tela_resultado_titulo">Resultado do Sorteio</string>
     <string name="tela_resultado_voltar">Voltar</string>
     <string name="tela_resultado_grupos_formados">Grupos Formados:</string>
-    <string name="tela_resultado_grupo_label">GRUPO %d (4 pessoas)</string>
+    <string name="tela_resultado_grupo_label">GRUPO %d (%d pessoas)</string>
 
-    <string name="sobra_sucesso">Sucesso! Todos os %d nomes foram encaixados em grupos completos.</string>
+    <string name="sobra_sucesso">✅ Sucesso! Todos os %d nomes foram encaixados em grupos completos.</string>
     <string name="sobra_aviso">⚠️ Sobraram %d nome(s): %s</string>
-    <string name="sobra_nenhum_grupo">Nenhum grupo completo pôde ser formado.</string>
+    <string name="sobra_nenhum_grupo">❌ Nenhum grupo completo pôde ser formado.</string>
 </resources>

@@ -3,8 +3,13 @@ package com.gabrielfreire.sorteiopro
 class Sorteador {
     fun sortearGruposComLideres(
         textoCabecasDeChave: String,
-        textoDemaisNomes: String
+        textoDemaisNomes: String,
+        tamanhoDoGrupo: Int
     ): ResultadoSorteio {
+        if (tamanhoDoGrupo <= 1) {
+            return ResultadoSorteio(grupos = emptyList(), sobrantes = emptyList())
+        }
+
         val cabecasDeChave = textoCabecasDeChave.split(";")
             .map { it.trim() }
             .filter { it.isNotEmpty() }
@@ -18,10 +23,13 @@ class Sorteador {
         val numCabecas = cabecasDeChave.size
         val gruposFinais = mutableListOf<List<String>>()
         val sobrantes = mutableListOf<String>()
+        val faltam = tamanhoDoGrupo - 1
 
-        if (numCabecas == 0) {
+        if (numCabecas == 0 || demaisNomes.size < faltam) {
+            sobrantes.addAll(elements = cabecasDeChave)
             sobrantes.addAll(elements = demaisNomes)
-            return ResultadoSorteio(grupos = emptyList(), sobrantes = sobrantes)
+
+            return ResultadoSorteio(grupos = emptyList(), sobrantes)
         }
 
         for (i in 0 until numCabecas) {
@@ -30,19 +38,14 @@ class Sorteador {
 
             grupoEmConstrucao.add(cabeca)
 
-            val faltam = TAMANHO_DO_GRUPO - 1
-
             if (demaisNomes.size >= faltam) {
                 val completadores = demaisNomes.take(n = faltam)
-
                 demaisNomes = demaisNomes.drop(n = faltam)
 
                 grupoEmConstrucao.addAll(elements = completadores)
-
                 gruposFinais.add(grupoEmConstrucao)
             } else {
                 sobrantes.add(cabeca)
-
                 val cabecasRestantes = cabecasDeChave.subList(i + 1, cabecasDeChave.size)
 
                 sobrantes.addAll(elements = cabecasRestantes)
@@ -54,9 +57,5 @@ class Sorteador {
         sobrantes.addAll(elements = demaisNomes)
 
         return ResultadoSorteio(grupos = gruposFinais, sobrantes = sobrantes)
-    }
-
-    companion object {
-        const val TAMANHO_DO_GRUPO = 4
     }
 }

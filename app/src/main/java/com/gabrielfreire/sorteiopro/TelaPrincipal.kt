@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -24,18 +23,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
+fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: Int) -> Unit) {
+    var tamanhoDoGrupoTexto by remember { mutableStateOf(value = "4") }
     var nomesLideres by remember { mutableStateOf(value = "") }
     var nomesComuns by remember { mutableStateOf(value = "") }
 
-    val lideresValidos = nomesLideres.split(";").filter { it.trim().isNotEmpty() }.size
-    val comunsValidos = nomesComuns.split(";").filter { it.trim().isNotEmpty() }.size
-    val isEnabled = lideresValidos >= 1 && comunsValidos >= (TAMANHO_DO_GRUPO - 1)
+    val tamanhoDoGrupo: Int = tamanhoDoGrupoTexto.toIntOrNull() ?: 0
+    val lideresCount = nomesLideres.split(";").filter { it.trim().isNotEmpty() }.size
+    val comunsCount = nomesComuns.split(";").filter { it.trim().isNotEmpty() }.size
+    val isEnabled = tamanhoDoGrupo >= 2 && lideresCount >= 1 && comunsCount >= (tamanhoDoGrupo - 1)
 
     Scaffold(topBar = {
         TopAppBar(title = {
@@ -50,55 +51,88 @@ fun TelaPrincipal(onSortearClicked: (String, String) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                value = nomesLideres,
-                onValueChange = { nomesLideres = it },
+                value = tamanhoDoGrupoTexto,
+                onValueChange = { novoTexto ->
+                    if (novoTexto.length <= 2 && novoTexto.all { it.isDigit() }) {
+                        tamanhoDoGrupoTexto = novoTexto
+                    }
+                },
                 label = {
-                    Text(text = stringResource(id = R.string.tela_principal_lideres_label))
+                    Text(text = stringResource(id = R.string.tela_principal_tamanho_label))
                 },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.tela_principal_lideres_placeholder))
-                },
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(height = 16.dp))
 
-            OutlinedTextField(
-                value = nomesComuns,
-                onValueChange = { nomesComuns = it },
-                label = {
-                    Text(text = stringResource(id = R.string.tela_principal_membros_label))
-                },
-                placeholder = {
-                    Text(text = stringResource(id = R.string.tela_principal_membros_placeholder))
-                },
-                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 100.dp, max = 250.dp)
-            )
+                    .weight(weight = 1f)
+            ) {
+                OutlinedTextField(
+                    value = nomesLideres,
+                    onValueChange = { nomesLideres = it },
+                    label = {
+                        Text(text = stringResource(id = R.string.tela_principal_lideres_label))
+                    },
+                    placeholder = {
+                        Text(text = stringResource(id = R.string.tela_principal_lideres_placeholder))
+                    },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(weight = 1f)
+                )
+
+                Spacer(modifier = Modifier.height(height = 16.dp))
+
+                OutlinedTextField(
+                    value = nomesComuns,
+                    onValueChange = { nomesComuns = it },
+                    label = {
+                        Text(text = stringResource(id = R.string.tela_principal_membros_label))
+                    },
+                    placeholder = {
+                        Text(text = stringResource(id = R.string.tela_principal_membros_placeholder))
+                    },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(weight = 1f)
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(height = 24.dp))
 
             Button(
-                onClick = { onSortearClicked(nomesLideres, nomesComuns) },
+                onClick = {
+                    onSortearClicked(
+                        nomesLideres,
+                        nomesComuns,
+                        tamanhoDoGrupo
+                    )
+                },
                 enabled = isEnabled,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = stringResource(
                         id = R.string.tela_principal_botao_sortear,
-                        TAMANHO_DO_GRUPO
+                        tamanhoDoGrupo
                     )
                 )
             }
 
             if (isEnabled.not()) {
+                val minMembros = if (tamanhoDoGrupo >= 2) tamanhoDoGrupo - 1 else 1
+
                 Text(
                     text = stringResource(
                         id = R.string.tela_principal_minimo_sortear,
-                        TAMANHO_DO_GRUPO - 1
+                        minMembros
                     ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error

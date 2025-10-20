@@ -7,6 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,21 +22,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.ui.res.stringResource
-import com.gabrielfreire.sorteiopro.Sorteador.Companion.TAMANHO_DO_GRUPO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
-    val numNomesTotais = resultado.grupos.size * TAMANHO_DO_GRUPO
+fun TelaResultado(
+    resultado: ResultadoSorteio,
+    tamanhoGrupoEsperado: Int,
+    onBackClicked: () -> Unit
+) {
+    val numNomesTotais = resultado.grupos.size * tamanhoGrupoEsperado
 
     Scaffold(
         topBar = {
@@ -59,7 +62,7 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                 stringResource(
                     id = R.string.sobra_aviso,
                     resultado.sobrantes.size,
-                    resultado.sobrantes.joinToString(", ")
+                    resultado.sobrantes.joinToString(separator = ", ")
                 )
             }
 
@@ -91,6 +94,7 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                     text = stringResource(id = R.string.tela_resultado_grupos_formados),
                     style = MaterialTheme.typography.headlineSmall
                 )
+
                 Spacer(modifier = Modifier.height(height = 8.dp))
 
                 LazyColumn {
@@ -104,11 +108,14 @@ fun TelaResultado(resultado: ResultadoSorteio, onBackClicked: () -> Unit) {
                                 Text(
                                     text = stringResource(
                                         id = R.string.tela_resultado_grupo_label,
-                                        index + 1
+                                        index + 1,
+                                        grupo.size
                                     ),
                                     style = MaterialTheme.typography.titleMedium
                                 )
+
                                 Spacer(modifier = Modifier.height(height = 4.dp))
+
                                 Text(
                                     text = grupo.joinToString(separator = "\n"),
                                     style = MaterialTheme.typography.bodyLarge,
