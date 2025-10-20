@@ -15,7 +15,7 @@
     <string name="tela_resultado_grupos_formados">Grupos Formados:</string>
     <string name="tela_resultado_grupo_label">GRUPO %d (%d pessoas)</string>
 
-    <string name="sobra_sucesso">✅ Sucesso! Todos os %d nomes foram encaixados em grupos completos.</string>
-    <string name="sobra_aviso">⚠️ Sobraram %d nome(s): %s</string>
-    <string name="sobra_nenhum_grupo">❌ Nenhum grupo completo pôde ser formado.</string>
+    <string name="sobra_sucesso">Sucesso! Todos os %d nomes foram encaixados em grupos completos.</string>
+    <string name="sobra_aviso">Sobraram %d nome(s): %s</string>
+    <string name="sobra_nenhum_grupo">Nenhum grupo completo pôde ser formado.</string>
 </resources>
