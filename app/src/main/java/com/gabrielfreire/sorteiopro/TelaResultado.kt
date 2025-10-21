@@ -22,9 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +70,7 @@ fun TelaResultado(
             }
 
             val color = if (resultado.sobrantes.isEmpty()) {
-                MaterialTheme.colorScheme.primary
+                colorResource(id = R.color.SuccessGreen)
             } else {
                 MaterialTheme.colorScheme.error
             }
@@ -127,5 +130,53 @@ fun TelaResultado(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Claro - Resultado Completo")
+@Composable
+fun TelaResultadoCompletoPreviewLight() {
+    SorteioProTheme(darkTheme = false) {
+        TelaResultado(
+            resultado = DadosDeMock.resultadoCompleto(),
+            tamanhoGrupoEsperado = 4,
+            onBackClicked = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Escuro - Resultado Completo")
+@Composable
+fun TelaResultadoCompletoPreviewDark() {
+    SorteioProTheme(darkTheme = true) {
+        TelaResultado(
+            resultado = DadosDeMock.resultadoCompleto(),
+            tamanhoGrupoEsperado = 4,
+            onBackClicked = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Claro - Resultado Com Sobra")
+@Composable
+fun TelaResultadoComSobraPreviewLight() {
+    SorteioProTheme(darkTheme = false) {
+        TelaResultado(
+            resultado = DadosDeMock.resultadoComSobras(),
+            tamanhoGrupoEsperado = 4,
+            onBackClicked = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Escuro - Resultado Com Sobra")
+@Composable
+fun TelaResultadoComSobraPreviewDark() {
+    SorteioProTheme(darkTheme = true) {
+        TelaResultado(
+            resultado = DadosDeMock.resultadoComSobras(),
+            tamanhoGrupoEsperado = 4,
+            onBackClicked = {}
+        )
     }
 }

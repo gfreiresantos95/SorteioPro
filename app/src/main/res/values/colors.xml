@@ -24,4 +24,5 @@
     <color name="OnSurfaceDark">#FFE0E0E0</color>
     <color name="ErrorDark">#FFCF6679</color>
     <color name="OnErrorDark">#FF000000</color>
+    <color name="SuccessGreen">#FF05F26C</color>
 </resources>

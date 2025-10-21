@@ -24,7 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,5 +141,21 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Claro - Principal")
+@Composable
+fun TelaPrincipalPreviewLight() {
+    SorteioProTheme(darkTheme = false) {
+        TelaPrincipal(onSortearClicked = { _, _, _ -> })
+    }
+}
+
+@Preview(showBackground = true, name = "Escuro - Principal")
+@Composable
+fun TelaPrincipalPreviewDark() {
+    SorteioProTheme(darkTheme = true) {
+        TelaPrincipal(onSortearClicked = { _, _, _ -> })
     }
 }
