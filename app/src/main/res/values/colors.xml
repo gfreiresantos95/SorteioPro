@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="PrimaryRed">#FFF20544</color>
+    <color name="OnPrimaryRed">#FFFFFFFF</color>
+    <color name="SecondaryColorLight">#FF7B565C</color>
+    <color name="OnSecondaryColorLight">#FFFFFFFF</color>
+    <color name="TertiaryColorLight">#FF26C6DA</color>
+    <color name="OnTertiaryColorLight">#FF000000</color>
+    <color name="BackgroundLight">#FFF5F5F5</color>
+    <color name="OnBackgroundLight">#FF202020</color>
+    <color name="SurfaceLight">#FFFFFFFF</color>
+    <color name="OnSurfaceLight">#FF202020</color>
+    <color name="ErrorLight">#FFB00020</color>
+    <color name="OnErrorLight">#FFFFFFFF</color>
+    <color name="PrimaryRedDark">#FFE53935</color>
+    <color name="OnPrimaryRedDark">#FFFFFFFF</color>
+    <color name="SecondaryColorDark">#FFC69A9D</color>
+    <color name="OnSecondaryColorDark">#FF000000</color>
+    <color name="TertiaryColorDark">#FF00BCD4</color>
+    <color name="OnTertiaryColorDark">#FF000000</color>
+    <color name="BackgroundDark">#FF121212</color>
+    <color name="OnBackgroundDark">#FFE0E0E0</color>
+    <color name="SurfaceDark">#FF1E1E1E</color>
+    <color name="OnSurfaceDark">#FFE0E0E0</color>
+    <color name="ErrorDark">#FFCF6679</color>
+    <color name="OnErrorDark">#FF000000</color>
 </resources>
