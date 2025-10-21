@@ -40,12 +40,14 @@ class Sorteador {
 
             if (demaisNomes.size >= faltam) {
                 val completadores = demaisNomes.take(n = faltam)
+
                 demaisNomes = demaisNomes.drop(n = faltam)
 
                 grupoEmConstrucao.addAll(elements = completadores)
                 gruposFinais.add(grupoEmConstrucao)
             } else {
                 sobrantes.add(cabeca)
+
                 val cabecasRestantes = cabecasDeChave.subList(i + 1, cabecasDeChave.size)
 
                 sobrantes.addAll(elements = cabecasRestantes)
