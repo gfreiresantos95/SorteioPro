@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun AppNavigation() {
+
     val navController = rememberNavController()
 
     var resultadoSorteio by remember { mutableStateOf<ResultadoSorteio?>(value = null) }

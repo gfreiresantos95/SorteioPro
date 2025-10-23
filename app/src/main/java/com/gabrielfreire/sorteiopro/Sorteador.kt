@@ -1,11 +1,13 @@
 package com.gabrielfreire.sorteiopro
 
 class Sorteador {
+
     fun sortearGruposComLideres(
         textoCabecasDeChave: String,
         textoDemaisNomes: String,
         tamanhoDoGrupo: Int
     ): ResultadoSorteio {
+
         if (tamanhoDoGrupo <= 1) {
             return ResultadoSorteio(grupos = emptyList(), sobrantes = emptyList())
         }
@@ -44,6 +46,7 @@ class Sorteador {
                 demaisNomes = demaisNomes.drop(n = faltam)
 
                 grupoEmConstrucao.addAll(elements = completadores)
+
                 gruposFinais.add(grupoEmConstrucao)
             } else {
                 sobrantes.add(cabeca)

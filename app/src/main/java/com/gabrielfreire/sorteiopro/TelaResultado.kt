@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +35,7 @@ fun TelaResultado(
     tamanhoGrupoEsperado: Int,
     onBackClicked: () -> Unit
 ) {
+
     val numNomesTotais = resultado.grupos.size * tamanhoGrupoEsperado
 
     Scaffold(
@@ -57,7 +57,7 @@ fun TelaResultado(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+                .padding(all = 16.dp)
         ) {
             val textoSobra = if (resultado.sobrantes.isEmpty()) {
                 stringResource(id = R.string.sobra_sucesso, numNomesTotais)
@@ -69,16 +69,10 @@ fun TelaResultado(
                 )
             }
 
-            val color = if (resultado.sobrantes.isEmpty()) {
-                colorResource(id = R.color.SuccessGreen)
-            } else {
-                MaterialTheme.colorScheme.error
-            }
-
             Text(
                 text = textoSobra,
                 style = MaterialTheme.typography.titleMedium,
-                color = color,
+                color = MaterialTheme.colorScheme.inverseSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(

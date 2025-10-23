@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +32,7 @@ import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: Int) -> Unit) {
+
     var tamanhoDoGrupoTexto by remember { mutableStateOf(value = "4") }
     var nomesLideres by remember { mutableStateOf(value = "") }
     var nomesComuns by remember { mutableStateOf(value = "") }
@@ -62,7 +64,10 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                 label = {
                     Text(text = stringResource(id = R.string.tela_principal_tamanho_label))
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -82,7 +87,10 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     placeholder = {
                         Text(text = stringResource(id = R.string.tela_principal_lideres_placeholder))
                     },
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Words,
+                        imeAction = ImeAction.Done
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(weight = 1f)
@@ -99,13 +107,15 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     placeholder = {
                         Text(text = stringResource(id = R.string.tela_principal_membros_placeholder))
                     },
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Words,
+                        imeAction = ImeAction.Done
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(weight = 1f)
                 )
             }
-
 
             Spacer(modifier = Modifier.height(height = 24.dp))
 
