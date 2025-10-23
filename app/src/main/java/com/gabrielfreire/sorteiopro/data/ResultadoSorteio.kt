@@ -1,4 +1,4 @@
-package com.gabrielfreire.sorteiopro
+package com.gabrielfreire.sorteiopro.data
 
 data class ResultadoSorteio(
     val grupos: List<List<String>>,

@@ -1,4 +1,4 @@
-package com.gabrielfreire.sorteiopro
+package com.gabrielfreire.sorteiopro.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -26,6 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gabrielfreire.sorteiopro.utils.DadosDeMock
+import com.gabrielfreire.sorteiopro.R
+import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
 import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

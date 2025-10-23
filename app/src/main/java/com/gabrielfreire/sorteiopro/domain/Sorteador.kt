@@ -1,4 +1,6 @@
-package com.gabrielfreire.sorteiopro
+package com.gabrielfreire.sorteiopro.domain
+
+import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
 
 class Sorteador {
 

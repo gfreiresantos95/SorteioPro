@@ -1,4 +1,4 @@
-package com.gabrielfreire.sorteiopro
+package com.gabrielfreire.sorteiopro.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -10,6 +10,11 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
+import com.gabrielfreire.sorteiopro.data.Screen
+import com.gabrielfreire.sorteiopro.domain.Sorteador
+import com.gabrielfreire.sorteiopro.ui.screens.TelaPrincipal
+import com.gabrielfreire.sorteiopro.ui.screens.TelaResultado
 
 @Composable
 fun AppNavigation() {

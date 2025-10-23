@@ -1,4 +1,6 @@
-package com.gabrielfreire.sorteiopro
+package com.gabrielfreire.sorteiopro.utils
+
+import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
 
 object DadosDeMock {
 
