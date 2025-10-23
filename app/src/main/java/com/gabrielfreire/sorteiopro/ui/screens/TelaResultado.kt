@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +31,7 @@ import com.gabrielfreire.sorteiopro.utils.DadosDeMock
 import com.gabrielfreire.sorteiopro.R
 import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
 import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
+import com.gabrielfreire.sorteiopro.utils.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,13 +48,17 @@ fun TelaResultado(
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.tela_resultado_titulo)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClicked) {
+                    IconButton(
+                        onClick = onBackClicked,
+                        modifier = Modifier.testTag(tag = TestTags.BOTAO_VOLTAR)
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.tela_resultado_voltar)
                         )
                     }
-                }
+                },
+                modifier = Modifier.testTag(tag = TestTags.TELA_RESULTADO)
             )
         }
     ) { paddingValues ->
@@ -63,7 +69,10 @@ fun TelaResultado(
                 .padding(all = 16.dp)
         ) {
             val textoSobra = if (resultado.sobrantes.isEmpty()) {
-                stringResource(id = R.string.sobra_sucesso, numNomesTotais)
+                stringResource(
+                    id = R.string.sobra_sucesso,
+                    numNomesTotais
+                )
             } else {
                 stringResource(
                     id = R.string.sobra_aviso,
@@ -87,22 +96,27 @@ fun TelaResultado(
 
             Spacer(modifier = Modifier.height(height = 16.dp))
 
-            if (resultado.grupos.isEmpty()) {
-                Text(text = stringResource(id = R.string.sobra_nenhum_grupo))
+            val textoResultado = if (resultado.grupos.isEmpty()) {
+                stringResource(id = R.string.sobra_nenhum_grupo)
             } else {
-                Text(
-                    text = stringResource(id = R.string.tela_resultado_grupos_formados),
-                    style = MaterialTheme.typography.headlineSmall
-                )
+                stringResource(id = R.string.tela_resultado_grupos_formados)
+            }
 
+            Text(
+                text = textoResultado,
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.testTag(tag = TestTags.MENSAGEM_RESULTADO)
+            )
+
+            if (resultado.grupos.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(height = 8.dp))
 
-                LazyColumn {
+                LazyColumn(modifier = Modifier.testTag(tag = TestTags.LISTA_RESULTADO)) {
                     itemsIndexed(items = resultado.grupos) { index, grupo ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .padding(vertical = 4.dp)
                         ) {
                             Column(modifier = Modifier.padding(all = 16.dp)) {
                                 Text(
@@ -111,7 +125,8 @@ fun TelaResultado(
                                         index + 1,
                                         grupo.size
                                     ),
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.testTag(tag = TestTags.TITULO_GRUPO)
                                 )
 
                                 Spacer(modifier = Modifier.height(height = 4.dp))
@@ -135,8 +150,8 @@ fun TelaResultado(
 fun TelaResultadoCompletoPreviewLight() {
     SorteioProTheme(darkTheme = false) {
         TelaResultado(
-            resultado = DadosDeMock.resultadoCompleto(),
-            tamanhoGrupoEsperado = 4,
+            resultado = DadosDeMock.resultadoCompleto,
+            tamanhoGrupoEsperado = DadosDeMock.TAMANHO_GRUPO,
             onBackClicked = {}
         )
     }
@@ -147,8 +162,8 @@ fun TelaResultadoCompletoPreviewLight() {
 fun TelaResultadoCompletoPreviewDark() {
     SorteioProTheme(darkTheme = true) {
         TelaResultado(
-            resultado = DadosDeMock.resultadoCompleto(),
-            tamanhoGrupoEsperado = 4,
+            resultado = DadosDeMock.resultadoCompleto,
+            tamanhoGrupoEsperado = DadosDeMock.TAMANHO_GRUPO,
             onBackClicked = {}
         )
     }
@@ -159,8 +174,8 @@ fun TelaResultadoCompletoPreviewDark() {
 fun TelaResultadoComSobraPreviewLight() {
     SorteioProTheme(darkTheme = false) {
         TelaResultado(
-            resultado = DadosDeMock.resultadoComSobras(),
-            tamanhoGrupoEsperado = 4,
+            resultado = DadosDeMock.resultadoComSobras,
+            tamanhoGrupoEsperado = DadosDeMock.TAMANHO_GRUPO,
             onBackClicked = {}
         )
     }
@@ -171,8 +186,8 @@ fun TelaResultadoComSobraPreviewLight() {
 fun TelaResultadoComSobraPreviewDark() {
     SorteioProTheme(darkTheme = true) {
         TelaResultado(
-            resultado = DadosDeMock.resultadoComSobras(),
-            tamanhoGrupoEsperado = 4,
+            resultado = DadosDeMock.resultadoComSobras,
+            tamanhoGrupoEsperado = DadosDeMock.TAMANHO_GRUPO,
             onBackClicked = {}
         )
     }

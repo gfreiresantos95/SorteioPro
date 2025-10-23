@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -29,12 +30,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gabrielfreire.sorteiopro.R
 import com.gabrielfreire.sorteiopro.ui.theme.SorteioProTheme
+import com.gabrielfreire.sorteiopro.utils.DadosDeMock
+import com.gabrielfreire.sorteiopro.utils.TestTags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: Int) -> Unit) {
 
-    var tamanhoDoGrupoTexto by remember { mutableStateOf(value = "4") }
+    var tamanhoDoGrupoTexto by remember {
+        mutableStateOf(value = DadosDeMock.TAMANHO_GRUPO.toString())
+    }
+
     var nomesLideres by remember { mutableStateOf(value = "") }
     var nomesComuns by remember { mutableStateOf(value = "") }
 
@@ -69,7 +75,9 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(tag = TestTags.CAMPO_TAMANHO)
             )
 
             Spacer(modifier = Modifier.height(height = 16.dp))
@@ -95,6 +103,7 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(weight = 1f)
+                        .testTag(tag = TestTags.CAMPO_CABECAS)
                 )
 
                 Spacer(modifier = Modifier.height(height = 16.dp))
@@ -115,6 +124,7 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(weight = 1f)
+                        .testTag(tag = TestTags.CAMPO_DEMAIS)
                 )
             }
 
@@ -129,7 +139,9 @@ fun TelaPrincipal(onSortearClicked: (lideres: String, comuns: String, tamanho: I
                     )
                 },
                 enabled = isEnabled,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(tag = TestTags.BOTAO_SORTEAR)
             ) {
                 Text(
                     text = stringResource(

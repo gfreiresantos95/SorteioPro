@@ -4,19 +4,17 @@ import com.gabrielfreire.sorteiopro.data.ResultadoSorteio
 
 object DadosDeMock {
 
-    fun resultadoCompleto(): ResultadoSorteio {
-        val grupos = listOf(
-            listOf("Alice (Líder)", "Bruno", "Cecília", "Davi"),
-            listOf("Eduardo (Líder)", "Fabiola", "Guilherme", "Helena")
-        )
+    private val grupos = listOf(
+        listOf("Alice (Líder)", "Bruno", "Cecília", "Davi"),
+        listOf("Eduardo (Líder)", "Fabiola", "Guilherme", "Helena")
+    )
 
-        return ResultadoSorteio(grupos, sobrantes = emptyList())
-    }
+    private val sobrantes = listOf("Marco", "Nathalia", "Olivia")
 
-    fun resultadoComSobras(): ResultadoSorteio {
-        val grupos = listOf(listOf("Igor (Líder)", "Juliana", "Kevin", "Larissa"))
-        val sobrantes = listOf("Marco", "Nathalia", "Olivia")
+    const val TAMANHO_GRUPO = 4
 
-        return ResultadoSorteio(grupos, sobrantes)
-    }
+
+    val resultadoCompleto = ResultadoSorteio(grupos = grupos, sobrantes = emptyList())
+    val resultadoComSobras = ResultadoSorteio(grupos = grupos, sobrantes = sobrantes)
+    val resultadoSemGrupos = ResultadoSorteio(grupos = emptyList(), sobrantes = emptyList())
 }

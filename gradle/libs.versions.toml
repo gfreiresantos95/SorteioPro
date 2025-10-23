@@ -19,6 +19,7 @@ composeBom = "2024.04.01"
 material = "1.13.0"
 material3 = "1.4.0"
 navigationCompose = "2.9.5"
+navigationTesting = "2.9.5"
 truth = "1.4.5"
 
 [libraries]
@@ -33,6 +34,7 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 androidx-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationTesting" }
 compose-bom-v20251000 = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBomVersion" }
 foundation = { module = "androidx.compose.foundation:foundation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
